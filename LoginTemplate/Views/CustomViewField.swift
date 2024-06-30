@@ -1,0 +1,56 @@
+//
+//  CustomViewField.swift
+//  LoginTemplate
+//
+//  Created by john on 18.06.2024.
+//
+
+import SwiftUI
+
+struct CustomViewField: View {
+    var sfIcon: String
+    var iconTing: Color = .gray
+    var hint: String
+    var isPassword: Bool = false
+    @Binding var value: String
+    @State private var showPassword: Bool = false
+    
+    var body: some View {
+        HStack(alignment: .center, spacing: 8) {
+            Image(systemName: sfIcon)
+                .foregroundStyle(iconTing)
+                .frame(width: 30)
+                .offset(y: -2)
+            
+            VStack(alignment: .leading, spacing: 8) {
+                if isPassword {
+                    Group {
+                        if showPassword {
+                            TextField(hint, text: $value)
+                        } else {
+                            SecureField(hint, text: $value)
+                        }
+                    }
+                } else {
+                    TextField(hint, text: $value)
+                }
+                
+                Divider()
+            }
+            .overlay(alignment: .trailing) {
+                if isPassword {
+                    Button(action: {
+                        withAnimation {
+                            showPassword.toggle()
+                        }
+                    }, label: {
+                        Image(systemName: showPassword ? "eye.slash" : "eye")
+                            .foregroundStyle(.gray)
+                            .padding(10)
+                            .contentShape(.rect)
+                    })
+                }
+            }
+        }
+    }
+}
